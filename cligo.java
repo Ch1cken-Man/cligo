@@ -48,7 +48,16 @@ class main{
             else{
                 int ycoord = Integer.parseInt(p1move.substring(0,1));
                 int xcoord = Integer.parseInt(p1move.substring(1));
-                if(goBoard9[ycoord][xcoord] ==0){goBoard9[ycoord][xcoord] = currentPlayersTurn;}
+                if(ycoord-1 >=1 && xcoord-1 >=1 && ycoord-1 <= boardSize && xcoord-1 <= boardSize && goBoard9[ycoord-1][xcoord-1] ==0)
+                {
+                    goBoard9[ycoord-1][xcoord-1] = currentPlayersTurn;
+                }
+                else{
+                    print("illegal move try again");
+                    if(currentPlayersTurn ==1){currentPlayersTurn = 2;}
+                    else if(currentPlayersTurn==2){currentPlayersTurn = 1;}
+ 
+                }
             } 
             //after a player finishes 
             printBoard(goBoard9,boardSize);
@@ -86,17 +95,56 @@ class main{
         return "p1 turn complete";
     }
 */
-    public static void printBoard(int[][] theBoard,int boardSize){
+    public static void printBasicBoard(int[][] theBoard,int boardSize){
          String boardPrint = "\n";
 
          for (int y = 0; y<boardSize; y++){
             for(int x = 0; x<boardSize; x++){
                 boardPrint+=" "+Integer.toString(theBoard[y][x])+" ";
-            } 
+            }
             boardPrint+="\n";
-        }       
+        }
         print(boardPrint);
 
+    }
+    public static void printBoard(int[][] theBoard, int boardSize){
+        String emptySpace = " ";
+        String noPieceFiller = "+";
+        String p1Piece = "1";
+        String p2Piece = "2";
+        String boardPrint = "\n";
+        for (int y = -1; y<boardSize; y++){
+            //rows
+            if(y==-1){//prints empty top left corner
+                boardPrint+= emptySpace + emptySpace + emptySpace;
+            } 
+            if(y >= 0){ //prints left reference nums
+                boardPrint+= emptySpace + (y+1) + emptySpace;
+            }
+            for(int x = 0; x<boardSize; x++){
+                //columns
+                if(y!=-1){
+                    if(theBoard[y][x]==0){ //if no piece is there
+                        boardPrint += emptySpace + noPieceFiller + emptySpace;
+                    }
+                    else if(theBoard[y][x]==1){ //if p1 has a piece there
+                        boardPrint += emptySpace + p1Piece + emptySpace;
+                    }
+                    else if(theBoard[y][x]==2){ //if p2 has a piece there
+                        boardPrint += emptySpace + p2Piece + emptySpace;
+                    }
+//                    boardPrint+= emptySpace +Integer.toString(theBoard[y][x])+ emptySpace;
+                }
+                else{
+                    //prints top reference nums 
+                    boardPrint+= emptySpace + (x+1) + emptySpace;
+                }
+
+            }
+             
+            boardPrint+="\n";
+        }
+        print(boardPrint);
     }
     public static void print(String text){
         System.out.println(text);
