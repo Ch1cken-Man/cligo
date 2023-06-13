@@ -3,8 +3,8 @@ import java.util.Scanner;
 class main{
     public static void main(String args[]){
         Scanner input = new Scanner(System.in);
-        int boardSize = 9; 
-        int[][] goBoard9 = new int[boardSize+1][boardSize];
+
+        goBoard goBoard = new goBoard(9);
 
 
         print("Hello and welcome to cligo!");
@@ -21,7 +21,7 @@ class main{
         if(firstInput.equals("y") || firstInput.equals("Y") || firstInput.equals("\n")){
             gameInProgress = true; 
             print("game started");
-            printBoard(goBoard9,boardSize);
+            goBoard.printBoard();
             print("type the coordinates of your next move");
         }
         else if(firstInput.equals("s")){
@@ -33,37 +33,50 @@ class main{
         int currentPlayersTurn = 1;
 
         while(gameInProgress){
-            String p1move = input.nextLine(); 
+            String move = input.nextLine(); 
             //if player passes
-            if(p1move.equals("pass")){
+            if(move.equals("pass")){
                 if(passRequest==true){
                     print("game ended upon agreement");
+                    print("and I am too lazy to  build in the scoring, score it yourself");
                     break;
                 } 
                 passRequest = true;
-                print("p1 passes");
+                print("player "+currentPlayersTurn+ " passes");
+                if(currentPlayersTurn ==1){currentPlayersTurn = 2;}
+                else if(currentPlayersTurn==2){currentPlayersTurn = 1;}
+                continue;
             }
             
             //if player moves
             else{
-                int ycoord = Integer.parseInt(p1move.substring(0,1));
-                int xcoord = Integer.parseInt(p1move.substring(1));
-                if(ycoord-1 >=1 && xcoord-1 >=1 && ycoord-1 <= boardSize && xcoord-1 <= boardSize && goBoard9[ycoord-1][xcoord-1] ==0)
-                {
-                    goBoard9[ycoord-1][xcoord-1] = currentPlayersTurn;
+                int minusIndex = 0;
+                for(int i=0 ; i<move.length() ; i++){
+                    if(move.substring(i,i+1).equals('-')){
+                        System.out.println(move.substring(0,minusIndex));
+                        minusIndex = i;
+                        return; 
+                    }
                 }
-                else{
-                    print("illegal move try again");
+
+
+                int ycoord = Integer.parseInt(move.substring(0,minusIndex-1));
+                int xcoord = Integer.parseInt(move.substring(minusIndex,move.length()));
+                boolean moveSuccess = goBoard.makeMove(ycoord,xcoord,currentPlayersTurn);
+                if(moveSuccess){
+                    goBoard.printBoard();
+                    print("input your next move"); 
                     if(currentPlayersTurn ==1){currentPlayersTurn = 2;}
                     else if(currentPlayersTurn==2){currentPlayersTurn = 1;}
- 
+                    passRequest = false;
+                    continue;
+                } 
+                else{
+                    goBoard.printBoard();
+                    print("illegal or improper move, try again");
+                    continue;
                 }
             } 
-            //after a player finishes 
-            printBoard(goBoard9,boardSize);
-            print("input your next move"); 
-            if(currentPlayersTurn ==1){currentPlayersTurn = 2;}
-            else if(currentPlayersTurn==2){currentPlayersTurn = 1;}
         }
 
         if(isInSetup){
@@ -73,29 +86,47 @@ class main{
 
 
     }
-/*
-    public static String doTurn(boolean passRequest){
-        string p1move = input.nextline(); 
-        if(p1move.equals("pass")){
-            if(passrequest==true){
-                return "game finished by passing";
-            } 
-            passrequest = true;
-            print("p1 passes");
-            return "p1 passes"; 
+    
+    public static void print(String text){
+        System.out.println(text);
+    }
+ 
+}
+
+
+
+
+
+
+class goBoard{
+    private int[][] theBoard;
+    private int boardSize;
+
+    public goBoard(int boardSizee){
+        theBoard = new int[boardSizee][boardSizee];
+        boardSize = boardSizee;
+    }
+
+    public int[][] getBoard(){
+        return theBoard;
+    }
+    
+    public boolean makeMove(int currentPlayersTurn, int yCoord, int xCoord){
+        
+        //returns true if move was made, returns false if it is an illegal move
+
+        if(yCoord-1 >=1 && xCoord-1 >=1 && yCoord-1 <= boardSize && xCoord-1 <= boardSize && theBoard[yCoord-1][xCoord-1] ==0)
+        {
+            theBoard[yCoord][xCoord] = currentPlayersTurn;
+            return true;
         }
         else{
-            int ycoord = integer.parseint(p1move.substring(0,1));
-            int xcoord = integer.parseint(p1move.substring(1));
-            goboard9[ycoord][xcoord] = 1; 
-        } 
-            
-        printboard(goboard9,boardsize);
-        print("input your next move"); 
-        return "p1 turn complete";
+            System.out.println(yCoord+xCoord);
+            return false; 
+        }
     }
-*/
-    public static void printBasicBoard(int[][] theBoard,int boardSize){
+//board printers*****************************************************************************************************
+    public void printBasicBoard(){
          String boardPrint = "\n";
 
          for (int y = 0; y<boardSize; y++){
@@ -104,10 +135,11 @@ class main{
             }
             boardPrint+="\n";
         }
-        print(boardPrint);
+        System.out.println(boardPrint);
 
     }
-    public static void printBoard(int[][] theBoard, int boardSize){
+
+    public void printBoard(){
         String emptySpace = " ";
         String noPieceFiller = "+";
         String p1Piece = "1";
@@ -144,10 +176,11 @@ class main{
              
             boardPrint+="\n";
         }
-        print(boardPrint);
+        System.out.println(boardPrint);
     }
-    public static void print(String text){
-        System.out.println(text);
-    }
- 
+
+
+
+
+
 }
