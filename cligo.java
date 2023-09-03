@@ -1,107 +1,89 @@
-import java.util.Scanner;
-
-class main{
-    public static void main(String args[]){
-        Scanner input = new Scanner(System.in);
-
-        goBoard goBoard = new goBoard(9);
+import java.util.ArrayList;
 
 
-        print("Hello and welcome to cligo!");
-        print("play with defaults? (Y/N)");
-       
-
- 
-        boolean gameInProgress = false; 
-        boolean isInSetup = false;
-
-
-        String firstInput = input.nextLine(); 
-
-        if(firstInput.equals("y") || firstInput.equals("Y") || firstInput.equals("\n")){
-            gameInProgress = true; 
-            print("game started");
-            goBoard.printBoard();
-            print("type the coordinates of your next move");
-        }
-        else if(firstInput.equals("s")){
-           isInSetup = true; 
-        }
+/*
+class goString{
+    //this class is to take the board, spit it into strings, check if the strings have liberties, and return what stones to remove. 
+    //I will likely just do all of this in the goboard class with just another method. 
+    //stone coord
+    //list of stone coord that make up the string
+    private ArrayList<int[]> libertyCoordinateList = new ArrayList<int[]>();
+    private int[][] goBoard;
 
 
-        boolean passRequest = false;
-        int currentPlayersTurn = 1;
 
-        while(gameInProgress){
-            String move = input.nextLine(); 
-            //if player passes
-            if(move.equals("pass")){
-                if(passRequest==true){
-                    print("game ended upon agreement");
-                    print("and I am too lazy to  build in the scoring, score it yourself");
-                    break;
-                } 
-                passRequest = true;
-                print("player "+currentPlayersTurn+ " passes");
-                if(currentPlayersTurn ==1){currentPlayersTurn = 2;}
-                else if(currentPlayersTurn==2){currentPlayersTurn = 1;}
-                continue;
-            }
-            
-            //if player moves
-            else{
-                int minusIndex = 0;
-                for(int i=0 ; i<move.length() ; i++){
-                    if(move.substring(i,i+1).equals('-')){
-                        System.out.println(move.substring(0,minusIndex));
-                        minusIndex = i;
-                        return; 
-                    }
-                }
-
-
-                int ycoord = Integer.parseInt(move.substring(0,minusIndex-1));
-                int xcoord = Integer.parseInt(move.substring(minusIndex,move.length()));
-                boolean moveSuccess = goBoard.makeMove(ycoord,xcoord,currentPlayersTurn);
-                if(moveSuccess){
-                    goBoard.printBoard();
-                    print("input your next move"); 
-                    if(currentPlayersTurn ==1){currentPlayersTurn = 2;}
-                    else if(currentPlayersTurn==2){currentPlayersTurn = 1;}
-                    passRequest = false;
-                    continue;
-                } 
-                else{
-                    goBoard.printBoard();
-                    print("illegal or improper move, try again");
-                    continue;
-                }
-            } 
-        }
-
-        if(isInSetup){
-            print("it should be in setup mode now");
-
-        }
-
-
+    public goString(int[][] theBoard, ArrayList<int[]> stoneCoordList){
+        stoneCoordinateList = stoneCoordList;
+        goBoard = theBoard;
+    }
+    public void addStoneToString(int[] coordinates){
+        stoneCoordinateList.add(coordinates);
     }
     
-    public static void print(String text){
-        System.out.println(text);
-    }
- 
 }
+*/
+class goString
+{
+    public goString{}
+    {
+
+    }
+}
+class stringList
+{
+    private ArrayList<ArrayList<int[]>> theStringList;    
+    public stringList()
+    {
+
+    }
+
+    public void addStone(int[])
+    {
+        
+    }
+
+//list liberties of given string
+    private ArrayList<int[]> identifyLiberties(ArrayList<int[]> theString)
+    {
+
+        ArrayList<int[]> libertyList = new ArrayList<>();
+        for(int i = 0 ; i<theString.size(); i++){
+
+            int[] stoneCoord = theString.get(i);
+            int stoney = stoneCoord[0];
+            int stonex = stoneCoord[1];
+
+            int[] l1 = {stoney-1,stonex};
+            int[] l2 = {stoney, stonex+1};
+            int[] l3 = {stoney+1,stonex};
+            int[] l4 = {stoney, stonex-1};
+            if(!libertyList.contains(l1)&&!theString.contains(l1)){
+                libertyList.add(l1);
+            }
+            if(!libertyList.contains(l2)&&!theString.contains(l2)){
+                libertyList.add(l2);
+            }
+            if(!libertyList.contains(l3)&&!theString.contains(l3)){
+                libertyList.add(l3);
+            }
+            if(!libertyList.contains(l4)&&!theString.contains(l4)){
+                libertyList.add(l4);
+            }
+        }
+        return libertyList;
+
+    }
 
 
-
-
-
+}
 
 class goBoard{
     private int[][] theBoard;
     private int boardSize;
 
+    private arraylist<arraylist<int[]>> p1Strings;
+    private arraylist<arraylist<int[]>> p2Strings;
+ 
     public goBoard(int boardSizee){
         theBoard = new int[boardSizee][boardSizee];
         boardSize = boardSizee;
@@ -110,21 +92,148 @@ class goBoard{
     public int[][] getBoard(){
         return theBoard;
     }
+
+    //list player peices
+    public ArrayList<int[]> listPlayerPieces(int player){
+        ArrayList<int[]> pieceList = new ArrayList<>(); 
+        for (int y = 0; y<boardSize; y++){
+            for(int x = 0; x<boardSize; x++){
+                if(theBoard[y][x]==player){
+                    int[] coordinates = {y,x};
+                    pieceList.add(coordinates);
+                }
+            }
+        }
+        return pieceList;
+    }
+
+
+
+    //checks if illegal move    
     
-    public boolean makeMove(int currentPlayersTurn, int yCoord, int xCoord){
-        
+    public boolean makeMove(int[] moveCoords, int currentPlayersTurn){
+        int yCoord = moveCoords[0]-1;
+        int xCoord = moveCoords[1]-1; 
         //returns true if move was made, returns false if it is an illegal move
 
-        if(yCoord-1 >=1 && xCoord-1 >=1 && yCoord-1 <= boardSize && xCoord-1 <= boardSize && theBoard[yCoord-1][xCoord-1] ==0)
+        if(yCoord >=0 && xCoord >=0 && yCoord <= boardSize && xCoord <= boardSize && theBoard[yCoord][xCoord] ==0)
         {
             theBoard[yCoord][xCoord] = currentPlayersTurn;
             return true;
         }
         else{
-            System.out.println(yCoord+xCoord);
             return false; 
         }
     }
+
+//list liberties of given string
+    public ArrayList<int[]> identifyLiberties(ArrayList<int[]> theString)
+    {
+
+        ArrayList<int[]> libertyList = new ArrayList<>();
+        for(int i = 0 ; i<theString.size(); i++){
+
+            int[] stoneCoord = theString.get(i);
+            int stoney = stoneCoord[0];
+            int stonex = stoneCoord[1];
+
+            int[] l1 = {stoney-1,stonex};
+            int[] l2 = {stoney, stonex+1};
+            int[] l3 = {stoney+1,stonex};
+            int[] l4 = {stoney, stonex-1};
+            if(!libertyList.contains(l1)&&!theString.contains(l1)){
+                libertyList.add(l1);
+            }
+            if(!libertyList.contains(l2)&&!theString.contains(l2)){
+                libertyList.add(l2);
+            }
+            if(!libertyList.contains(l3)&&!theString.contains(l3)){
+                libertyList.add(l3);
+            }
+            if(!libertyList.contains(l4)&&!theString.contains(l4)){
+                libertyList.add(l4);
+            }
+        }
+        return libertyList;
+
+    }
+
+
+
+//print a list of coordinates with this
+    public void printcoordlist(arraylist<arraylist<int[]>> coordlist)
+    {
+        int presentx;
+        int presenty;
+        for(int i = 0 ; i<coordlist.size() ; i++)
+        {
+            presentx = coordlist.get(i)[0];
+            presenty = coordlist.get(i)[1];
+            system.out.println(presentx+","+presenty);
+        }
+        return;
+    }
+
+//the working one
+
+    public ArrayList<int[]> returnAdjecentSquares(int[] stoneCoord)
+    {
+        int stoney = stoneCoord[0];
+        int stonex = stoneCoord[1];
+             
+        int[] l1 = {stoney-1,stonex};
+        int[] l2 = {stoney, stonex+1};
+        int[] l3 = {stoney+1,stonex};
+        int[] l4 = {stoney, stonex-1};
+ 
+        ArrayList<int[]> libertiesOfBuildingString;
+        libertiesOfBuildingString.add(l1);
+        libertiesOfBuildingString.add(l2);
+        libertiesOfBuildingString.add(l3);
+        libertiesOfBuildingString.add(l4);
+
+        return libertiesOfBuildingString;
+
+    }
+
+
+
+
+
+    public ArrayList<ArrayList<int[]>> identifyStrings(ArrayList<int[]> pieceList){
+
+        ArrayList<ArrayList<int[]>> stringList = new ArrayList<>();
+
+
+        //identify adjecent stones and merge them
+        while(pieceList.size()>0){
+            int[] stoneCoord = pieceList.get(0);
+            
+            ArrayList<int[]> buildingString = new ArrayList<>();
+            buildingString.add(stoneCoord);
+            
+            returnAdjecentSquares(stoneCoord);
+
+            for(int i = 0 ; i<libertiesOfBuildingString.size() ; i++){
+                int[] currentLibertyCoord = libertiesOfBuildingString.get(i);
+                
+                if(pieceList.contains(currentLibertyCoord)){
+                    //if an adjacent piece is found
+                    buildingString.add(currentLibertyCoord);
+                    while(pieceList.contains(currentLibertyCoord)){pieceList.remove(currentLibertyCoord);}
+                    libertiesOfBuildingString = identifyLiberties(buildingString);
+                    i = -1;
+                }
+            }
+            stringList.add(buildingString);
+
+        }
+        printCoordList(stringList);
+        return stringList;
+
+    }
+
+
 //board printers*****************************************************************************************************
     public void printBasicBoard(){
          String boardPrint = "\n";
@@ -180,7 +289,24 @@ class goBoard{
     }
 
 
+}
 
+class helper{
+    public static int[] parseInput(String input){
+        int minusIndex = 0;
+        for(int i=0 ;i<input.length(); i++){
+            if(input.charAt(i) == '-'){
+                minusIndex = i;
+                break; 
+            }
+        }
+        String sycoord = input.substring(0,minusIndex); 
+        String sxcoord = input.substring(minusIndex+1);
+        int ycoord = Integer.parseInt(sycoord);
+        int xcoord = Integer.parseInt(sxcoord);
+        int[] coordinates = {ycoord,xcoord};
+        return coordinates;
+    }
 
 
 }
