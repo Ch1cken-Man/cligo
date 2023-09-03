@@ -24,25 +24,49 @@ class goString{
 */
 class goString
 {
-    public goString{}
+    ArrayList<int[]> theString;   
+    public goString{int[] firstCoord}
     {
-
+        theString.add(firstCoord);
+    }
+    public void addStone(int[] coord)
+    {
+        theString.add(coord);
     }
 }
 class stringList
 {
-    private ArrayList<ArrayList<int[]>> theStringList;    
-    public stringList()
+    private ArrayList<goString> theStringList;    
+    public stringList(goString firstString)
     {
-
+        theStringList.add(firstString);
     }
 
-    public void addStone(int[])
+    public void addString(goString newString)
     {
-        
+       theStringList.add(newString);
     }
 
-//list liberties of given string
+    public ArrayList<int[]> returnAdjecentSquares(int[] stoneCoord)
+    {
+        int stoney = stoneCoord[0];
+        int stonex = stoneCoord[1];
+             
+        int[] l1 = {stoney-1,stonex};
+        int[] l2 = {stoney, stonex+1};
+        int[] l3 = {stoney+1,stonex};
+        int[] l4 = {stoney, stonex-1};
+ 
+        ArrayList<int[]> adjacentSquares;
+        adjacentSquares.add(l1);
+        adjacentSquares.add(l2);
+        adjacentSquares.add(l3);
+        adjacentSquares.add(l4);
+
+        return adjacentSquares;
+
+    }
+    //list liberties of everything in the stringlist
     private ArrayList<int[]> identifyLiberties(ArrayList<int[]> theString)
     {
 
@@ -176,25 +200,6 @@ class goBoard{
 
 //the working one
 
-    public ArrayList<int[]> returnAdjecentSquares(int[] stoneCoord)
-    {
-        int stoney = stoneCoord[0];
-        int stonex = stoneCoord[1];
-             
-        int[] l1 = {stoney-1,stonex};
-        int[] l2 = {stoney, stonex+1};
-        int[] l3 = {stoney+1,stonex};
-        int[] l4 = {stoney, stonex-1};
- 
-        ArrayList<int[]> libertiesOfBuildingString;
-        libertiesOfBuildingString.add(l1);
-        libertiesOfBuildingString.add(l2);
-        libertiesOfBuildingString.add(l3);
-        libertiesOfBuildingString.add(l4);
-
-        return libertiesOfBuildingString;
-
-    }
 
 
 
