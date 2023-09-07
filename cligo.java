@@ -27,24 +27,23 @@ class goString
     ArrayList<int[]> theString;   
     public goString{int[] firstCoord}
     {
-        theString.add(firstCoord);
+        addStone(firstCoord);
+    }     
+    public ArrayList<int[]> returnString()
     }
+    return theString;
+    }
+
+
     public void addStone(int[] coord)
     {
         theString.add(coord);
     }
-}
-class stringList
-{
-    private ArrayList<goString> theStringList;    
-    public stringList(goString firstString)
-    {
-        theStringList.add(firstString);
-    }
 
-    public void addString(goString newString)
+    public void addStone(goString addedString)
     {
-       theStringList.add(newString);
+        ArrayList<int[]> strList = addedString.returnString();
+        theString.add(strList)
     }
 
     public ArrayList<int[]> returnAdjecentSquares(int[] stoneCoord)
@@ -66,6 +65,53 @@ class stringList
         return adjacentSquares;
 
     }
+
+    private ArrayList<int[]> calculateOuterEdge()
+    {
+        //calculate all possible liberties into libertyList
+        ArrayList<int[]> libertyList;
+        for(i = 0, i<theString.length, i++){
+           libertyList.add(this.returnAdjecentSquares(theString.get(i)));
+        }
+        //remove pieces already filled in with this string
+        for(i = 0, i<theString.length, i++)
+        {
+            libertyList.remove(theString.get(i));
+        }
+        //remove duplicates
+        Set<int[]> rmDupe = new hashSet<int[]>(libertyList);
+        libertyList = new ArrayList<int[]>(rmDupe);
+        return libertyList;
+    }
+}
+class stringList
+{
+    private ArrayList<goString> theStringList;    
+
+    public stringList(goString firstString)
+    {
+        theStringList.add(firstString);
+    }
+    //add every board move as its own string.
+    public void addString(goString newString)
+    {
+       theStringList.add(newString);
+    }
+
+    public ArrayList<int[]> returnAllLiberties()
+    {
+        ArrayList<int[]> edgeLibertyList;
+        for(int i = 0, i<theStringList.length, i++)
+        {
+            edgeLibertyList.add(theStringList.get(i).calculateOuterEdge();
+        }
+        //there should be no pieces with the liberties if all the strings were properly merged and only strings of pieces that actually aren't adjacent to eachother then you don't need to account for the pieces themselves. but if I get errors later this is what it could be. (you are welcome future cameron)
+        //removes duplicates within that color's pieces
+        set<int[]> rmDupe = new hashSet<int[]>(edgeLibertyList);
+        libertyList = new ArrayList<int[]>(rmDupe);
+        
+    }
+/*
     //list liberties of everything in the stringlist
     private ArrayList<int[]> identifyLiberties(ArrayList<int[]> theString)
     {
@@ -97,16 +143,16 @@ class stringList
         return libertyList;
 
     }
-
-
+*/
 }
 
 class goBoard{
     private int[][] theBoard;
     private int boardSize;
 
-    private arraylist<arraylist<int[]>> p1Strings;
-    private arraylist<arraylist<int[]>> p2Strings;
+
+    private stringList p1Strings;
+    private stringList p2Stirngs;
  
     public goBoard(int boardSizee){
         theBoard = new int[boardSizee][boardSizee];
@@ -149,37 +195,10 @@ class goBoard{
             return false; 
         }
     }
-
-//list liberties of given string
+//start here when you finish, I need to figure out what to do next in terms of what needs to be in this goboard class to be used in the other file. just work on the other file and use the funcitons I made until I need another one and then make that one
     public ArrayList<int[]> identifyLiberties(ArrayList<int[]> theString)
     {
-
-        ArrayList<int[]> libertyList = new ArrayList<>();
-        for(int i = 0 ; i<theString.size(); i++){
-
-            int[] stoneCoord = theString.get(i);
-            int stoney = stoneCoord[0];
-            int stonex = stoneCoord[1];
-
-            int[] l1 = {stoney-1,stonex};
-            int[] l2 = {stoney, stonex+1};
-            int[] l3 = {stoney+1,stonex};
-            int[] l4 = {stoney, stonex-1};
-            if(!libertyList.contains(l1)&&!theString.contains(l1)){
-                libertyList.add(l1);
-            }
-            if(!libertyList.contains(l2)&&!theString.contains(l2)){
-                libertyList.add(l2);
-            }
-            if(!libertyList.contains(l3)&&!theString.contains(l3)){
-                libertyList.add(l3);
-            }
-            if(!libertyList.contains(l4)&&!theString.contains(l4)){
-                libertyList.add(l4);
-            }
-        }
-        return libertyList;
-
+        
     }
 
 
