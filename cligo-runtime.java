@@ -79,11 +79,13 @@ class main{
 
 
     }
-    
+    /*
     public static void print(String text){
         System.out.println(text);
     }
-    
+    */
+
+
 //board printers*****************************************************************************************************
     public void printBasicBoard(){
          String boardPrint = "\n";
@@ -137,8 +139,26 @@ class main{
         }
         System.out.println(boardPrint);
     } 
-}
 
+    private int[] parseInput(String input){
+        int minusIndex = 0;
+        for(int i=0 ;i<input.length(); i++){
+            if(input.charAt(i) == '-'){
+                minusIndex = i;
+                break; 
+            }
+        }
+        String sycoord = input.substring(0,minusIndex); 
+        String sxcoord = input.substring(minusIndex+1);
+        int ycoord = Integer.parseInt(sycoord);
+        int xcoord = Integer.parseInt(sxcoord);
+        int[] coordinates = {ycoord,xcoord};
+        return coordinates;
+    }
+
+
+}//end of main()
+/*
 class helper{
     public static int[] parseInput(String input){
         int minusIndex = 0;
@@ -158,4 +178,5 @@ class helper{
 
 
 }
+*/
 
