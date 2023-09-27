@@ -1,34 +1,33 @@
 //this is the second version, where I rework it and copy from the older version, (this is attempt number 2 where I borrow much from the original and maybe have different files that do different things ) (one would have the backend calculations and the other would handle the frontend runtime)
 import java.util.Scanner;
-
+//the classes that fold around the data for the game
+import GoBoard.*;
 //untested since creation.
 
 class main{
     public static void main(String args[]){
         Scanner input = new Scanner(System.in);
 
-        goBoard goBoard = new goBoard(9);
+        GoBoard GoBoard = new GoBoard(9);
 
 
-        print("Hello and welcome to cligo!");
-        print("play with defaults? (Y/N)");
+        System.out.println("Hello and welcome to cligo!");
+        System.out.println("play with defaults? (Y/N)");
        
-
- 
         boolean gameInProgress = false; 
         boolean isInSetup = false;
-
 
         String firstInput = input.nextLine(); 
 
         if(firstInput.equals("y") || firstInput.equals("Y") || firstInput.equals("\n")){
             gameInProgress = true; 
-            print("game started");
-            goBoard.printBoard();
-            print("type the coordinates of your next move");
+            System.out.println("game started");
+            GoBoard.printBoard();
+            System.out.println("type the coordinates of your next move");
         }
-        else if(firstInput.equals("s")){
+        else if(firstInput.equals("N")){
            isInSetup = true; 
+           //enter into menu logic to change size of board, starting color, or AI difficulty.
         }
 
 
@@ -36,16 +35,22 @@ class main{
         int currentPlayersTurn = 1;
 
         while(gameInProgress){
+
+            //prompt+user input
+            System.out.println("player"+currentPlayersTurn+" input your move (\"pass\" or input an \"x-y\" coordinate");
             String move = input.nextLine(); 
+
+
             //if player passes
             if(move.equals("pass")){
                 if(passRequest==true){
-                    print("game ended upon agreement");
-                    print("and I am too lazy to  build in the scoring, score it yourself");
+                    System.out.println("game ended upon agreement");
+                    System.out.println("and I am too lazy to  build in the scoring, score it yourself");
                     break;
                 } 
                 passRequest = true;
-                print("player "+currentPlayersTurn+ " passes");
+                System.out.println("player "+currentPlayersTurn+ " passes");
+                //move onto the next player's turn and continue.
                 if(currentPlayersTurn ==1){currentPlayersTurn = 2;}
                 else if(currentPlayersTurn==2){currentPlayersTurn = 1;}
                 continue;
@@ -53,19 +58,20 @@ class main{
             
             //if player moves
             else{
-                int[] moveCoord = helper.parseInput(move);
-                boolean moveSuccess = goBoard.makeMove(moveCoord,currentPlayersTurn);
+                int[] moveCoord = parseInput(move);
+                boolean moveSuccess = GoBoard.makeMove(moveCoord,currentPlayersTurn);
                 if(moveSuccess){
-                    goBoard.printBoard();
-                    print("input your next move"); 
+                    GoBoard.printBoard();
+                    //print("input your next move"); 
+                    //move to next player's turn
                     if(currentPlayersTurn ==1){currentPlayersTurn = 2;}
                     else if(currentPlayersTurn==2){currentPlayersTurn = 1;}
                     passRequest = false;
                     continue;
                 } 
                 else{
-                    goBoard.printBoard();
-                    print("illegal or improper move, try again");
+                    GoBoard.printBoard();
+                    System.out.println("illegal or improper move, try again");
                     continue;
                 }
                 //print(goBoard.identifyStrings(goBoard.listPlayerPieces(currentPlayersTurn)));
@@ -73,8 +79,7 @@ class main{
         }
 
         if(isInSetup){
-            print("it should be in setup mode now");
-
+            System.out.println("it should be in setup mode now");
         }
 
 
@@ -83,7 +88,6 @@ class main{
     public static void print(String text){
         System.out.println(text);
     }
-    */
 
 
 //board printers*****************************************************************************************************
@@ -139,8 +143,8 @@ class main{
         }
         System.out.println(boardPrint);
     } 
-
-    private int[] parseInput(String input){
+*/
+    private static int[] parseInput(String input){
         int minusIndex = 0;
         for(int i=0 ;i<input.length(); i++){
             if(input.charAt(i) == '-'){
