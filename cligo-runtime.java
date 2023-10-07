@@ -1,7 +1,7 @@
 //this is the second version, where I rework it and copy from the older version, (this is attempt number 2 where I borrow much from the original and maybe have different files that do different things ) (one would have the backend calculations and the other would handle the frontend runtime)
 import java.util.Scanner;
 //the classes that fold around the data for the game
-import GoBoard.*;
+import cligo.GoBoard.*;
 //untested since creation.
 
 class main{

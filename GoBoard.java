@@ -48,27 +48,33 @@ public class goBoard{
     {
         int presentx;
         int presenty;
-        for(int i = 0 ; i<coordlist.size() ; i++)
-        {
-            presentx = coordlist.get(i)[0];
-            presenty = coordlist.get(i)[1];
-            System.out.println(presentx+","+presenty);
-        }
-        return;
+    for(int i = 0 ; i<coordlist.size() ; i++)
+    {
+        presentx = coordlist.get(i)[0];
+        presenty = coordlist.get(i)[1];
+        System.out.println(presentx+","+presenty);
     }
+    return;
+}
 */
-    public ArrayList<ArrayList<int[]>> identifyStrings(ArrayList<int[]> pieceList){
+public ArrayList<ArrayList<int[]>> identifyStrings(ArrayList<int[]> pieceList){
 
-        ArrayList<ArrayList<int[]>> stringList = new ArrayList<>();
+    ArrayList<GoString> stringList = new ArrayList<GoString>();
 
 
         //identify adjecent stones and merge them
         while(pieceList.size()>0){
             int[] stoneCoord = pieceList.get(0);
+            GoString buildingString = new GoString(stoneCoord);
             
-            ArrayList<int[]> buildingString = new ArrayList<>();
-            ArrayList<int[]> libertiesOfBuildingString = goString.returnAdjecentSquares(stoneCoord);
-            buildingString.add(stoneCoord);
+            //check if liberties of string intersect other pieces and add those pieces to the string if they do.
+            //remove string liberties that run up against
+
+
+
+            //ArrayList<int[]> buildingString = new ArrayList<>();
+            //ArrayList<int[]> libertiesOfBuildingString = goString.returnAdjecentSquares(stoneCoord);
+            //buildingString.add(stoneCoord);
 
             for(int i = 0 ; i<libertiesOfBuildingString.size() ; i++){
                 int[] currentLibertyCoord = libertiesOfBuildingString.get(i);
@@ -148,13 +154,18 @@ public class goBoard{
 }//end of goboard() class
 
 //single string of stones
-class goString
+class GoString
 {
     private ArrayList<int[]> theString;   
+    private ArrayList<int[]> libertyList;
 
     public goString(int[] firstCoord)
     {
-        addStone(firstCoord);
+        this.addStone(firstCoord);
+    }
+    public goString()
+    {
+
     }
 
     public ArrayList<int[]> returnString()
@@ -166,12 +177,31 @@ class goString
     public void addStone(int[] coord)
     {
         this.theString.add(coord);
+        this.updateValues();
+        return;
+    }
+    private void updateValues()
+    {
+        for(int i = 0; i<theString.size() ; i++)
+        {   //adds all adjacent squares regardless
+            ArrayList<int[]> allAdjecentSquares(theString.get(i));
+            //removes "self" liberties
+            for(int g = 0 ; g<allAdjecentSquares.size() ; g++)
+            {
+                if(theString.contains(allAdjecentSquares.get(g))
+                }
+                    allAdjecentSquares.remove(g);
+                }
+            }
+            libertyList.add(allAdjecentSquares);
+        }
+        return;
     }
 
     public void addStone(goString addedString)
     {
         ArrayList<int[]> strList = addedString.returnString();
-        this.theString.add(strList);
+        this.addStone(strList);
     }
 
     public static ArrayList<int[]> returnAdjecentSquares(int[] stoneCoord)
@@ -191,9 +221,8 @@ class goString
         adjacentSquares.add(l4);
 
         return adjacentSquares;
-
     }
-
+/*
     private ArrayList<int[]> calculateOuterEdge()
     {
         //calculate all possible liberties into libertyList
@@ -210,11 +239,11 @@ class goString
         Set<int[]> rmDupe = new hashSet<int[]>(libertyList);
         libertyList = new ArrayList<int[]>(rmDupe);
         return libertyList;
-    }
+ k  }
 }//string class ends
 
 
-
+/*
 //list of all the strings of one color
 class stringList
 {
@@ -245,4 +274,5 @@ class stringList
     }
 
 }//stringlist ends
+*/
 
