@@ -34,16 +34,16 @@ public class goBoard{
             return false; 
         }
     }
+/*
     public ArrayList<int[]> identifyLiberties(ArrayList<int[]> theString)
     {
         
     }
 
 
-
     //print a list of coordinates with this
     //this isn't that nessary right?
-    /*
+    //
     public void printcoordlist(ArrayList<ArrayList<int[]>> coordlist)
     {
         int presentx;
@@ -67,9 +67,8 @@ public class goBoard{
             int[] stoneCoord = pieceList.get(0);
             
             ArrayList<int[]> buildingString = new ArrayList<>();
+            ArrayList<int[]> libertiesOfBuildingString = goString.returnAdjecentSquares(stoneCoord);
             buildingString.add(stoneCoord);
-            
-            goString.returnAdjecentSquares(stoneCoord);
 
             for(int i = 0 ; i<libertiesOfBuildingString.size() ; i++){
                 int[] currentLibertyCoord = libertiesOfBuildingString.get(i);
@@ -85,7 +84,7 @@ public class goBoard{
             stringList.add(buildingString);
 
         }
-        printCoordList(stringList);
+        //printCoordList(stringList);
         return stringList;
 
     }
