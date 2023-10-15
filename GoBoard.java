@@ -57,8 +57,8 @@ public class goBoard{
     return;
 }
 */
-public ArrayList<ArrayList<int[]>> identifyStrings(ArrayList<int[]> pieceList){
-
+public ArrayList<ArrayList<int[]>> identifyStrings(ArrayList<int[]> input-list){
+    ArrayList<int[]> stoneList = input-list;
     ArrayList<GoString> stringList = new ArrayList<GoString>();
 
 
@@ -69,8 +69,6 @@ public ArrayList<ArrayList<int[]>> identifyStrings(ArrayList<int[]> pieceList){
             
             //check if liberties of string intersect other pieces and add those pieces to the string if they do.
             //remove string liberties that run up against
-
-
 
             //ArrayList<int[]> buildingString = new ArrayList<>();
             //ArrayList<int[]> libertiesOfBuildingString = goString.returnAdjecentSquares(stoneCoord);
@@ -170,9 +168,12 @@ class GoString
 
     public ArrayList<int[]> returnString()
     {
-    return this.theString;
+        return this.theString;
     }
-
+    public ArrayList<int[]> returnLiberties()
+    {
+        return this.libertyList;
+    }
 
     public void addStone(int[] coord)
     {
@@ -180,28 +181,29 @@ class GoString
         this.updateValues();
         return;
     }
+    public void addStone(goString addedString)
+    {
+        ArrayList<int[]> strList = addedString.returnString();
+        this.addStone(strList);
+    }
     private void updateValues()
     {
         for(int i = 0; i<theString.size() ; i++)
         {   //adds all adjacent squares regardless
-            ArrayList<int[]> allAdjecentSquares(theString.get(i));
+            ArrayList<int[]> allAdjecentSquares = new ArrayList<int[]>;
+            allAdjecentSquares.add(this.returnAdjecentSquares(i));
+       //     ArrayList<int[]> allAdjecentSquares(theString.get(i));
             //removes "self" liberties
             for(int g = 0 ; g<allAdjecentSquares.size() ; g++)
             {
                 if(theString.contains(allAdjecentSquares.get(g))
-                }
+                {
                     allAdjecentSquares.remove(g);
                 }
             }
             libertyList.add(allAdjecentSquares);
         }
         return;
-    }
-
-    public void addStone(goString addedString)
-    {
-        ArrayList<int[]> strList = addedString.returnString();
-        this.addStone(strList);
     }
 
     public static ArrayList<int[]> returnAdjecentSquares(int[] stoneCoord)
@@ -222,6 +224,8 @@ class GoString
 
         return adjacentSquares;
     }
+
+}//string class ends
 /*
     private ArrayList<int[]> calculateOuterEdge()
     {
@@ -240,7 +244,6 @@ class GoString
         libertyList = new ArrayList<int[]>(rmDupe);
         return libertyList;
  k  }
-}//string class ends
 
 
 /*
